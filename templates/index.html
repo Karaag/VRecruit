@@ -1,20 +1,86 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post List</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VR Recruit - Discover 求人</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>Posts</h1>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <h2>{{ post.content }}</h2>
-                <p>Posted by User ID: {{ post.user_id }}</p>
-                <p>Created at: {{ post.created_at }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="logo">VRRecruit</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+    </div>
+    <div class="user-icon">
+      <!-- アイコンなどに差し替え -->
+      <img src="https://via.placeholder.com/40" alt="User Icon" />
+    </div>
+  </header>
+  
+  <!-- メインコンテンツ -->
+  <main class="main-content">
+    <!-- Discover 見出し部分 -->
+    <section class="discover-section">
+      <h1>Discover 求人</h1>
+      <!-- タグ一覧 -->
+      <div class="tag-list">
+        <button>#探偵</button>
+        <button>#猫</button>
+        <button>#夜</button>
+        <button>#朝</button>
+        <button>#いいね</button>
+        <button>#お医者さん</button>
+      </div>
+    </section>
+    
+    <!-- 人気セクション -->
+    <section class="popular-section">
+      <h2>人気</h2>
+      <div class="card-grid">
+        <!-- 1枚目のカード（実際の画像に差し替えてください） -->
+        <div class="card">
+          <img 
+            src="https://via.placeholder.com/300x300.png?text=VR+Instructor+Image" 
+            alt="VR Instructor" 
+          />
+          <p class="card-title">ボディインストラクター</p>
+        </div>
+        <!-- 空きカードを複数配置（例） -->
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+      </div>
+    </section>
+    
+    <!-- 新着セクション -->
+    <section class="new-section">
+      <h2>新着</h2>
+      <div class="card-grid">
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+      </div>
+    </section>
+    
+    <!-- 特集セクション -->
+    <section class="featured-section">
+      <h2>特集</h2>
+      <div class="card-grid">
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
