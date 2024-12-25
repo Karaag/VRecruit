@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VRイベント求人アプリ{% endblock %}</title>
+    <!-- ファビコンの設定 -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- 追加でPNG形式をサポートする場合 -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <!-- CSSのリンク -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="/index.html">
+            <img src="{{ url_for('static', filename='images/icon.png') }}" alt="アプリのロゴ">
+        </a>
+        <div class="search-container">
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="header-icons">
+            <a href="/user.html">
+                <img src="{{ url_for('static', filename='images/mypage-icon.png') }}" alt="My Page" title="My Page">
+            </a>
+            <a href="/create-post">
+                <img src="{{ url_for('static', filename='images/post-icon.png') }}" alt="Create Post" title="Create Post">
+            </a>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
+
+

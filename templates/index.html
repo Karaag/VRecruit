@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post List</title>
-</head>
-<body>
-    <h1>Posts</h1>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <h2>{{ post.content }}</h2>
-                <p>Posted by User ID: {{ post.user_id }}</p>
-                <p>Created at: {{ post.created_at }}</p>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}ホーム - VRイベント求人アプリ{% endblock %}
+
+{% block content %}
+<h1>Posts</h1>
+<ul>
+    {% for post in posts %}
+        <li>
+            <h2>{{ post.content }}</h2>
+            <p>Posted by User ID: {{ post.user_id }}</p>
+            <p>Created at: {{ post.created_at }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+
