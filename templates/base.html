@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <a href="/index.html">
+        <a href="{{ url_for('index') }}">
             <img src="{{ url_for('static', filename='images/icon.png') }}" alt="アプリのロゴ">
         </a>
         <div class="search-container">
@@ -23,8 +23,8 @@
             <a href="/user.html">
                 <img src="{{ url_for('static', filename='images/mypage-icon.png') }}" alt="My Page" title="My Page">
             </a>
-            <a href="/create-post">
-                <img src="{{ url_for('static', filename='images/post-icon.png') }}" alt="Create Post" title="Create Post">
+            <a href="create_post.html">
+                <img src="{{ url_for('static', filename='images/createpost-icon.png') }}" alt="Create Post" title="Create Post">
             </a>
         </div>
     </header>
