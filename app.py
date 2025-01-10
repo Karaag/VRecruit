@@ -40,13 +40,41 @@ def post_page():
     return render_template("post.html")
 
 # 検索ページ (GETのみ想定)
-@app.route("/search")
+@app.route("/search", methods=["GET"])
 def search():
-    keyword = request.args.get("q", "")  # クエリパラメータ ?q=... を取得
-    # ここでDB検索などを行って結果を変数に入れる
-    search_results = []
-    # 例: search_results = Post.query.filter(Post.title.contains(keyword)).all()
-    return render_template("search.html", keyword=keyword, results=search_results)
+    """検索窓からの入力をもとに、通常検索 or タグ検索を行う"""
+    query = request.args.get("q", "").strip()  # 検索ワードを取得
+    if not query:
+        # 入力が空の場合、何もしないか、全件返すなどお好みで
+        return render_template("search.html", results=[], query=query)
+
+    if query.startswith("#"):
+        # ===================
+        # タグ検索
+        # ===================
+        tag_name = query[1:]  # 先頭の "#" を削除
+        # Tagテーブルで一致するタグを探し、PostTag から該当するPostをJOINで取得
+        results = (
+            db.session.query(Post)
+            .join(PostTag, Post.post_id == PostTag.post_id)
+            .join(Tag, PostTag.tag_id == Tag.tag_id)
+            .filter(Tag.name == tag_name)
+            .filter(Post.delete_flag == False)  # もし「削除フラグ」を除外したい場合
+            .all()
+        )
+    else:
+        # ===================
+        # 通常の投稿本文検索
+        # ===================
+        # ここでは部分一致検索 (LIKE) を想定
+        results = (
+            Post.query
+            .filter(Post.delete_flag == False)  # 削除フラグ OFF のものだけ
+            .filter(Post.content.contains(query))
+            .all()
+        )
+    
+    return render_template("search.html", results=results, query=query)
 
 # アプリ起動時にデータベースを作成
 if __name__ == "__main__":
