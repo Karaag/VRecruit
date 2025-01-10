@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from models import db, User, Post, PostAnalytics, Tag, PostTag
 
 app = Flask(__name__)
@@ -22,6 +22,31 @@ db.init_app(app)
 def index():
     posts = Post.query.all()
     return render_template("index.html", posts=posts)
+
+# アカウントページ
+@app.route("/account")
+def account():
+    # とりあえず簡単にテンプレートを返す例
+    return render_template("account.html")
+
+# 投稿作成ページ
+@app.route("/post", methods=["GET", "POST"])
+def post_page():
+    if request.method == "POST":
+        # ここでフォーム処理やDBへの書き込みなどを行う
+        # title = request.form.get("title")
+        # ...
+        return redirect(url_for("index"))
+    return render_template("post.html")
+
+# 検索ページ (GETのみ想定)
+@app.route("/search")
+def search():
+    keyword = request.args.get("q", "")  # クエリパラメータ ?q=... を取得
+    # ここでDB検索などを行って結果を変数に入れる
+    search_results = []
+    # 例: search_results = Post.query.filter(Post.title.contains(keyword)).all()
+    return render_template("search.html", keyword=keyword, results=search_results)
 
 # アプリ起動時にデータベースを作成
 if __name__ == "__main__":

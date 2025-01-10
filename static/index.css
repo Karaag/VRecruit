@@ -1,148 +1,166 @@
-/* 全体のリセット・ベース */
+/* リセット */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-color: #0e0e0e;
-    color: #ffffff;
-    font-family: sans-serif;
-  }
-  
-  /* ヘッダー */
-  .header {
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    height: 60px;
-    background-color: #111111;
-    border-bottom: 1px solid #333;
-  }
-  
-  .logo {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-right: 2rem;
-  }
-  
-  .search-bar {
-    flex: 1;
-  }
-  
-  .search-bar input {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0e0e0e;
+  color: #ffffff;
+  font-family: sans-serif;
+}
+
+/* ヘッダー全体：固定表示 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* 大きめの高さ */
+  background-color: #071b1f; /* ← ヘッダーカラーを画像に近いトーンに */
+  border-bottom: 1px solid #333;
+  transition: top 0.3s ease;
+  z-index: 999;
+}
+
+/* ヘッダー内の幅をメインコンテンツとそろえるためのラッパ */
+.header-inner {
+  max-width: 1200px; /* ← サイト全体を合わせたい幅 */
+  height: 100%;
+  margin: 0 auto;     /* センター寄せ */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 左ロゴ - 中央検索 - 右アイコンを左右に配置 */
+  padding: 0 1rem;   /* 両サイドに余白 */
+}
+
+/* 左ロゴ */
+.header-left {
+  cursor: pointer;
+}
+.logo-img {
+  height: 48px; /* ロゴ画像のサイズはお好みで */
+}
+
+/* 検索フォームを中央配置して幅を広く */
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.search-input {
+  width: 600px;   /* 横に長く */
+  max-width: 80%; /* 画面が狭いときには8割程度まで */
+  padding: 10px 15px;
+  border-radius: 40px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #333;
+}
+
+/* 右アイコン */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* メインコンテンツの上余白(ヘッダーぶん) */
+.main-content {
+  max-width: 1200px; /* ヘッダーと同じ幅 */
+  margin: 80px auto 0 auto; /* ヘッダー高さ80pxぶん下げる */
+  padding: 1rem;
+}
+
+/* タイトルなど */
+.discover-title {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+/* タグ一覧 */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.tag-list button {
+  background-color: #222;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.tag-list button:hover {
+  background-color: #333;
+}
+
+/* 各セクションやカード周りは既存のまま */
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.section-add {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 34px;
+  cursor: pointer;
+}
+
+/* カードグリッド */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background-color: #1a1a1a;
+  border-radius: 5px;
+  padding: 0.5rem;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+}
+.card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+.card-title {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+.card.empty {
+  background-color: #2e2e2e;
+  border: 2px dashed #444;
+}
+
+/* レスポンシブ対応（お好みで） */
+@media (max-width: 768px) {
+  .search-input {
     width: 100%;
-    max-width: 400px;
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-  }
-  
-  .user-icon img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
-  /* メインコンテンツ */
-  .main-content {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Discover 見出し部分 */
-  .discover-section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .discover-section h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .tag-list button {
-    background-color: #222;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .tag-list button:hover {
-    background-color: #333;
-  }
-  
-  /* 見出し（人気、新着、特集） */
-  .popular-section,
-  .new-section,
-  .featured-section {
-    margin-bottom: 2rem;
-  }
-  
-  .popular-section h2,
-  .new-section h2,
-  .featured-section h2 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* カードグリッド */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  /* カード */
-  .card {
-    background-color: #1a1a1a;
-    border-radius: 5px;
-    padding: 0.5rem;
-    text-align: center;
-    overflow: hidden;
-    transition: transform 0.2s;
-  }
-  
-  .card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .card img {
     max-width: 100%;
-    border-radius: 5px;
   }
-  
-  /* カードのタイトルなど */
-  .card-title {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
-  
-  /* 空カード（未登録の枠） */
-  .card.empty {
-    background-color: #2e2e2e;
-    border: 2px dashed #444;
-  }
-  
-  /* レスポンシブ対応 */
-  @media (max-width: 768px) {
-    .tag-list button {
-      padding: 0.4rem 0.6rem;
-    }
-    
-    .card-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-  }
-  
+}
