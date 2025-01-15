@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* メイン背景は真っ黒ではなく、ややグレーがかった黒 */
+  background-color: #0e0e0e; 
+  color: #ffffff;
+  font-family: sans-serif;
+}
+
+/* ヘッダー全体 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* 大きめヘッダー */
+  background-color: #0a2326; /* ← 画像に近い深めブルー系(調整OK) */
+  /* 下に細い線か、あるいはちょっと厚めのラインでターコイズを入れると雰囲気UP */
+  border-bottom: 2px solid #0fa7b2; 
+  transition: top 0.3s ease; 
+  z-index: 999;
+}
+
+/* ヘッダー内部のコンテナ */
+.header-inner {
+  max-width: 1200px; /* サイト幅を1200px程度に */
+  height: 100%;
+  margin: 0 auto; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+/* 左ロゴ */
+.header-left {
+  cursor: pointer;
+}
+.logo-img {
+  height: 40px; 
+  /* ロゴ画像が横長なら適宜widthを指定して高さautoでもOK */
+}
+
+/* 中央(検索バー) */
+.header-center {
+  flex: 1; 
+  display: flex;
+  justify-content: center; /* 横中央に */
+}
+.search-input {
+  width: 900px;    
+  max-width: 70%;  
+  padding: 10px 20px;
+  border: none;
+  border-radius: 40px;  /* 丸みを大きく */
+  outline: none;
+  font-size: 1rem;
+  background-color: #ffffff; /* 白背景 */
+  color: #333333;
+  /* 文字はやや暗め */
+}
+
+/* 右アイコンエリア */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  /* アイコンが円形背景＋白抜きの場合は、ここで背景色指定してもOK
+     e.g. 
+     background-color: #0fa7b2;
+     border-radius: 50%;
+     object-fit: contain; 
+  */
+}
+
+/* メインコンテンツ */
+.main-content {
+  max-width: 1200px;
+  margin: 80px auto 0; /* ヘッダー80px分下げる */
+  padding: 1rem;
+}
+
+/* Discover 求人 タイトル */
+.discover-title {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+/* タグ一覧 */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.tag-list button {
+  background-color: transparent;
+  color: #00adb5;           /* ターコイズ系 */
+  border: 1px solid #00adb5;
+  padding: 6px 14px;
+  border-radius: 20px;      /* pill形状 */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+}
+.tag-list button:hover {
+  background-color: #00adb5;
+  color: #0e0e0e;
+}
+
+/* 見出し（人気、新着、特集） */
+section {
+  margin-bottom: 2rem;
+}
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.section-heading h2 {
+  font-size: 1.3rem;
+}
+.section-add {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #00adb5;
+  border-radius: 50%;
+  color: #00adb5;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.section-add:hover {
+  background-color: #00adb5;
+  color: #0e0e0e;
+}
+
+/* カードグリッド */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+/* カード */
+.card {
+  background-color: #2e2e2e;  /* やや明るいダークグレー */
+  border-radius: 10px;        /* 角丸大きめ */
+  padding: 0.5rem;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+}
+.card img {
+  max-width: 100%;
+  border-radius: 8px;  /* 画像にも角丸 */
+}
+.card-title {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* 空カード（枠のみ） */
+.card.empty {
+  background-color: #2e2e2e;
+  border: 2px dashed #444;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%;
+    max-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

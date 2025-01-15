@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VR Recruit - 検索結果</title>
+  <!-- 既存のCSSをそのまま使う -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <!-- =====================
+       ヘッダー (index.html と共通)
+  ====================== -->
+  <header id="mainHeader" class="header">
+    <div class="header-inner">
+      <!-- 左側ロゴ -->
+      <div class="header-left" onclick="window.location.href='/'">
+        <img 
+          src="{{ url_for('static', filename='images/logo.png') }}" 
+          alt="VRRecruit Logo" 
+          class="logo-img"
+        >
+      </div>
+
+      <!-- 検索バー (GET /search?q=...) -->
+      <div class="header-center">
+        <form action="/search" method="get">
+          <input type="text" name="q" placeholder="Search" class="search-input">
+        </form>    
+      </div>
+
+      <!-- 右側アイコン (人マークと＋マーク) -->
+      <div class="header-right">
+        <img 
+          src="{{ url_for('static', filename='images/user-icon.png') }}" 
+          alt="User Icon" 
+          class="icon-btn"
+          onclick="window.location.href='/account'"
+        >
+        <img 
+          src="{{ url_for('static', filename='images/plus-icon.png') }}" 
+          alt="Plus Icon" 
+          class="icon-btn"
+          onclick="window.location.href='/post'"
+        >
+      </div>
+    </div><!-- /.header-inner -->
+  </header>
+
+  <!-- =====================
+       メインコンテンツ
+  ====================== -->
+  <main class="main-content">
+    <!-- タイトルやタグ一覧など、index.html を参考にする例。不要なら省略してもOK -->
+    <h1 class="discover-title">Discover 求人</h1>
+    <div class="tag-list">
+      <!-- あくまでダミーのタグボタン例 -->
+      <button>#保育士</button>
+      <button>#猫</button>
+      <button>#夜</button>
+      <button>#朝</button>
+      <button>#いいね</button>
+      <button>#お医者さん</button>
+    </div>
+
+    <!-- ▼▼▼ 検索結果セクション ▼▼▼ -->
+    <section class="search-section">
+      <div class="section-heading">
+        <h2>検索結果</h2>
+        <!-- ＋ボタンを使いたいなら残しておく -->
+        <div class="section-add" onclick="alert('検索結果に新規追加')">+</div>
+      </div>
+
+      <!-- 検索結果をカードグリッドで並べる -->
+      <div class="card-grid">
+        <!-- 検索結果がある場合 -->
+        {% for post in results %}
+          <div class="card">
+            <!-- 画像がない場合はplaceholderを表示 -->
+            {% if post.image %}
+              <img src="{{ post.image }}" alt="Post Image">
+            {% else %}
+              <img 
+                src="https://via.placeholder.com/300x300.png?text=No+Image" 
+                alt="No Image"
+              >
+            {% endif %}
+
+            <!-- 投稿の本文（content）など -->
+            <p class="card-title">
+              <!-- 長文の場合、表示を短くするなら truncate フィルタ等も可 -->
+              {{ post.content }}
+            </p>
+          </div>
+        {% endfor %}
+
+        <!-- 検索結果が無い場合のメッセージ -->
+        {% if results|length == 0 %}
+          <div style="padding: 1rem; color: #fff;">
+            検索条件に合致する投稿はありませんでした。
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================
+       下部スクリプト
+  ====================== -->
+  <script>
+    let lastScrollTop = 0;
+    window.addEventListener("scroll", () => {
+      const header = document.getElementById("mainHeader");
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop) {
+        // 下スクロール -> 隠す
+        header.style.top = "-80px";
+      } else {
+        // 上スクロール -> 表示
+        header.style.top = "0";
+      }
+      lastScrollTop = scrollTop;
+    });
+  </script>
+</body>
+</html>
