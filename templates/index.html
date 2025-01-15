@@ -8,42 +8,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <!-- ヘッダー -->
-  <header id="mainHeader" class="header">
-    <div class="header-inner">
-      <!-- 左側ロゴ -->
-      <div class="header-left" onclick="window.location.href='/'">
-        <img 
-          src="{{ url_for('static', filename='images/logo.png') }}" 
-          alt="VRRecruit Logo" 
-          class="logo-img"
-        >
-      </div>
-
-      <!-- 検索バー -->
-      <div class="header-center">
-        <form action="/search" method="get">
-          <input type="text" name="q" placeholder="Search" class="search-input">
-        </form>    
-      </div>
-
-      <!-- 右側アイコン (人マークと＋マーク) -->
-      <div class="header-right">
-        <img 
-          src="{{ url_for('static', filename='images/user-icon.png') }}" 
-          alt="User Icon" 
-          class="icon-btn"
-          onclick="window.location.href='/account'"
-        >
-        <img 
-          src="{{ url_for('static', filename='images/plus-icon.png') }}" 
-          alt="Plus Icon" 
-          class="icon-btn"
-          onclick="window.location.href='/post'"
-        >
-      </div>
-    </div><!-- /.header-inner -->
-  </header>
+  <!-- ヘッダーをインクルード -->
+  {% include 'header.html' %}
 
   <!-- メインコンテンツ -->
   <main class="main-content">

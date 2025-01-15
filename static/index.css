@@ -74,12 +74,17 @@ body {
   width: 40px;
   height: 40px;
   cursor: pointer;
+  transition: transform 0.2s ease;
   /* アイコンが円形背景＋白抜きの場合は、ここで背景色指定してもOK
      e.g. 
      background-color: #0fa7b2;
      border-radius: 50%;
      object-fit: contain; 
   */
+}
+
+.icon-btn:hover {
+  transform: scale(1.2); /* ホバー時に少し拡大 */
 }
 
 /* メインコンテンツ */
@@ -157,7 +162,7 @@ section {
 
 /* カード */
 .card {
-  background-color: #2e2e2e;  /* やや明るいダークグレー */
+  background-color: #2D363F;  /* やや明るいダークグレー */
   border-radius: 10px;        /* 角丸大きめ */
   padding: 0.5rem;
   text-align: center;
@@ -178,7 +183,7 @@ section {
 
 /* 空カード（枠のみ） */
 .card.empty {
-  background-color: #2e2e2e;
+  background-color: #2D363F;
   border: 2px dashed #444;
 }
 
@@ -192,3 +197,32 @@ section {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
+
+
+/* ユーザー情報セクション(account.html) */
+.user-info {
+  background-color: #2D363F; /* 背景はやや明るいダークグレー */
+  padding: 20px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  line-height: 3.5;
+}
+.user-info p {
+  margin: 5px 0; /* 各行の間隔を少し取る */
+}
+
+/* 編集アイコン（ペンマーク）のスタイル */
+.edit-btn {
+  width: 30px; /* アイコンの幅 */
+  height: 30px; /* アイコンの高さ */
+  margin-left: 10px; /* タイトルとの間隔 */
+  vertical-align: middle; /* タイトルと中央揃え */
+  cursor: pointer; /* クリック可能にする */
+  transition: transform 0.2s ease; /* ホバー時のアニメーション */
+}
+
+.edit-btn:hover {
+  transform: scale(1.2); /* ホバー時に少し拡大 */
+}
+

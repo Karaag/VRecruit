@@ -37,7 +37,7 @@ def post_page():
         # title = request.form.get("title")
         # ...
         return redirect(url_for("index"))
-    return render_template("post.html")
+    return render_template("create_post.html")
 
 # 検索ページ (GETのみ想定)
 @app.route("/search", methods=["GET"])

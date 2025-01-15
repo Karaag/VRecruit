@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+  <!-- CSSの読み込み -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <!-- ヘッダーをインクルード -->
+  {% include 'header.html' %}
+
+  <!-- メインコンテンツ -->
+  <main class="main-content">
+    <!-- ユーザー情報 -->
+    <h1 class="discover-title">My page
+    <!-- 編集アイコン (ペンマーク) -->
+    <img 
+    src="{{ url_for('static', filename='images/edit.png') }}" 
+    alt="Edit Icon" 
+    class="edit-btn"
+    onclick="window.location.href='/user-edit'"
+  ></h1>
+    <section class="user-info">
+      <p>登録Xアカウント <strong>@tsukuba</strong></p>
+      <p>登録メールアドレス <strong>hogehoge@gmail.com</strong></p>
+    </section>
+
+    <!-- 投稿一覧 -->
+    <section>
+      <h1 class="discover-title">My投稿</h1>
+      <div class="card-grid">
+        <div class="card">
+          <img
+            src="https://via.placeholder.com/300x300.png?text=VR+Instructor+Image"
+            alt="VR Instructor"
+          />
+          <p class="card-title">ボドゲインストラクター</p>
+        </div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+        <div class="card empty"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
