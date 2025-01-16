@@ -20,8 +20,8 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
-    return render_template("index.html", posts=posts)
+    #posts = Post.query.all()
+    return render_template("index.html") #posts=posts
 
 # アカウントページ
 @app.route("/account")
