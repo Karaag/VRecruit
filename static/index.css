@@ -122,6 +122,13 @@ body {
   color: #0e0e0e;
 }
 
+/* 投稿作成画面の文字 */
+.question-text {
+  font-size: 1.2rem;
+  margin-left: 10rem;
+  margin-top: 5rem;
+}
+
 /* 見出し（人気、新着、特集） */
 section {
   margin-bottom: 2rem;
@@ -226,3 +233,62 @@ section {
   transform: scale(1.2); /* ホバー時に少し拡大 */
 }
 
+/* 投稿作成画面 */
+.form-group {
+  margin-bottom: 1.5rem; /* 入力フォームの間隔を広げる */
+}
+
+.form-group label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type='text'],
+.form-group input[type='url'] {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.form-group input[type='file']{
+  background-color: #00adb5; /* ボタンの背景色 */
+  border-radius: 5px; /* 角を丸くする */
+  padding: 0.8rem;
+  font-size: 1rem; /* フォントサイズ */
+  cursor: pointer; /* ホバー時にポインターに変更 */
+}
+.form-group input[type='file']:hover{
+  background-color: #007f89;
+}
+
+/* 確認へボタン */
+.submit-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #00adb5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.submit-btn:hover {
+  background-color: #007f89;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 画面全体の高さを確保 */
+  margin: 0 auto; /* 水平方向の中央揃え */
+  max-width: 1000px; /* フォームの幅を調整 */
+  padding: 2rem;
+  box-sizing: border-box;
+}

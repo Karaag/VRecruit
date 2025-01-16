@@ -39,6 +39,13 @@ def post_page():
         return redirect(url_for("index"))
     return render_template("create_post.html")
 
+@app.route("/create_post_check", methods=["GET","POST"])
+def create_post_check():
+    if request.method == "POST":
+
+        return redirect(url_for("index"))
+    return render_template("create_post_check.html")
+
 # 検索ページ (GETのみ想定)
 @app.route("/search", methods=["GET"])
 def search():

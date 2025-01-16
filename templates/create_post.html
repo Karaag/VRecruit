@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Page</title>
+  <title>投稿作成</title>
   <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
@@ -13,7 +13,41 @@
 
   <!-- メインコンテンツ -->
   <main class="main-content">
-   
+    <!-- 見出し -->
+    <h1 class="discover-title">投稿作成</h1>
+    <div class="form-container">
+      <div class="form-group">
+        <label for="title">タイトル<span class="required">*</span></label>
+        <input type="text" id="title" name="title" maxlength="30" placeholder="タイトルを入力(30字)" required>
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input type="url" id="url" name="url" placeholder="ポストURLを入力">
+      </div>
+
+      <div class="form-group">
+        <label for="thumbnail">サムネイル</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="tags">タグ</label>
+        <div class="tag-list">
+          <button type="button">#作業効率</button>
+          <button type="button">#仕事</button>
+          <button type="button">#学習</button>
+          <button type="button">#趣味</button>
+          <button type="button">#良い商品</button>
+        </div>
+        <input type="text" id="tags" name="tags" placeholder="タグを入力">
+      </div>
+      
+      <div class="form-group">
+        <button type="submit" class="submit-btn" onclick="window.location.href='/create_post_check'">確認へ</button>
+      </div>
+    </div>
+    </form>
   </main>
 </body>
 </html>
