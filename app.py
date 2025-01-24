@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, User, Post, PostAnalytics, Tag, PostTag
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -18,10 +19,12 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # DBの初期化
 db.init_app(app)
 
+
 @app.route("/")
 def index():
-    #posts = Post.query.all()
-    return render_template("index.html") #posts=posts
+    # DBから投稿を一覧表示
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
 
 # アカウントページ
 @app.route("/account")
@@ -75,6 +78,70 @@ def search():
         )
     
     return render_template("search.html", results=results, query=query)
+
+@app.route("/create_post", methods=["GET", "POST"])
+def create_post():
+    if request.method == "GET":
+        # 入力フォームを表示
+        return render_template("create_post.html")
+
+    # POST: フォーム送信されたデータを受け取り、DBに登録
+    content = request.form.get("content")  # 実際はタイトル扱い
+    tweet_link = request.form.get("tweet_link")
+    tags_str = request.form.get("tags", "").strip()
+    file = request.files.get("thumbnail")
+
+    # バリデーション例
+    if not content or not tweet_link:
+        return "タイトル(content) と URL は必須です", 400
+    if len(content) > 30:
+        return "タイトルは30文字以内にしてください", 400
+
+    # サムネイル画像を保存
+    image_path = None
+    if file and file.filename:
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(save_path)
+        image_path = f"/{app.config['UPLOAD_FOLDER']}/{filename}"
+
+    # DB登録
+    # ここでは content にタイトルをそのまま入れている
+    new_post = Post(
+        user_id=1,        # ログイン中のユーザーIDなどを適用
+        content=content,  # 「タイトル」として入力された値を content に保存
+        tweet_link=tweet_link,
+        image=image_path
+    )
+    db.session.add(new_post)
+    db.session.flush()  # post_id が確定
+
+    # タグがあれば紐付け (Tag, PostTag)
+    if tags_str:
+        # スペース区切りを最大6個まで
+        tag_list = tags_str.split()
+        tag_list = tag_list[:6]
+        for tname in tag_list:
+            # 先頭に # がついてるなら除去
+            if tname.startswith("#"):
+                tname = tname[1:]
+            tname = tname.strip()
+            if not tname:
+                continue
+            # 既存タグがあるかチェック
+            existing_tag = Tag.query.filter_by(name=tname).first()
+            if not existing_tag:
+                existing_tag = Tag(name=tname)
+                db.session.add(existing_tag)
+                db.session.flush()
+            # PostTag で紐付け
+            pt = PostTag(post_id=new_post.post_id, tag_id=existing_tag.tag_id)
+            db.session.add(pt)
+
+    db.session.commit()
+    return redirect(url_for("index"))
+
+
 
 # アプリ起動時にデータベースを作成
 if __name__ == "__main__":

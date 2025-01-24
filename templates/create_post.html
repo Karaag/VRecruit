@@ -1,0 +1,45 @@
+<!-- templates/create_post.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>投稿作成</title>
+  <!-- 例: 既存のCSSを読み込む -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <!-- ヘッダーなどはindex.htmlと同様でOK -->
+
+  <main class="main-content">
+    <h1>投稿作成</h1>
+
+    <form action="{{ url_for('create_post') }}" method="POST" enctype="multipart/form-data">
+      <!-- タイトル(実際には content に格納) -->
+      <div class="form-group">
+        <label for="content">タイトル <span class="required">*</span></label>
+        <input type="text" id="content" name="content" placeholder="タイトルを入力(30字以内)" maxlength="30" required>
+      </div>
+
+      <!-- URL (tweet_link) -->
+      <div class="form-group">
+        <label for="url">URL <span class="required">*</span></label>
+        <input type="url" id="url" name="tweet_link" placeholder="求人に対応するツイートURL" required>
+      </div>
+
+      <!-- サムネイル画像 -->
+      <div class="form-group">
+        <label for="thumbnail">サムネイルイメージ</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+      </div>
+
+      <!-- タグ (最大6つ)。実装詳細はお好みで -->
+      <div class="form-group">
+        <label for="tags">タグ</label>
+        <input type="text" id="tags" name="tags" placeholder="最大6つまで (例: VR ボランティア)" />
+      </div>
+
+      <button type="submit">確認へ</button>
+    </form>
+  </main>
+</body>
+</html>
