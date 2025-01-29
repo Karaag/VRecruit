@@ -256,6 +256,10 @@ section {
   background-color: #ffffff;
 }
 
+#repassword {
+  background-color: #BEBEBE; /* 淡い青色 */
+}
+
 .form-group input[type='file']{
   background-color: #00adb5; /* ボタンの背景色 */
   border-radius: 5px; /* 角を丸くする */
@@ -267,9 +271,10 @@ section {
   background-color: #007f89;
 }
 
-/* 確認へボタン */
+/* 変更ボタン */
 .submit-btn {
-  display: inline-block;
+  display: block;
+  margin-left: auto;
   padding: 0.8rem 2rem;
   font-size: 1.2rem;
   color: #ffffff;
@@ -280,15 +285,55 @@ section {
   transition: background-color 0.3s ease;
 }
 
-
 .submit-btn:hover {
   background-color: #007f89;
+}
+
+/* ログアウトボタン */
+.logout-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #2D363F;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
+  width: 200px; /* 任意の固定幅 */
+  text-align: center; /* テキストを中央揃え */
+}
+
+.logout-btn:hover {
+  background-color: #20262c;
+}
+
+/* アカウント削除ボタン */
+.delete-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #A8342E;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
+  width: 200px; /* 任意の固定幅 */
+  text-align: center; /* テキストを中央揃え */
+}
+
+.delete-btn:hover {
+  background-color: #912c27;
 }
 
 .form-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* 画面全体の高さを確保 */
   margin: 0 auto; /* 水平方向の中央揃え */
   max-width: 1000px; /* フォームの幅を調整 */
   padding: 2rem;

@@ -21,6 +21,8 @@
         <div class="form-group">
           <label for="profile-image">Change X</label>
         </div>
+        <!-- 認証へボタン -->
+        <button type="submit" class="submit-btn">X認証へ</button>
 
         <!-- メルアド -->
         <div class="form-group">
@@ -36,14 +38,19 @@
         </div>
         <!-- パスワード再入力 -->
         <div class="form-group">
-          <input type="password" id="password" name="password" placeholder="新しいパスワードをもう一度入力">
+          <label for="password">
+          <input type="password" id="repassword" name="password" placeholder="新しいパスワードをもう一度入力">
         </div>
         <!-- 現在のパスワード -->
         <div class="form-group">
-          <input type="password" id="password" name="password" placeholder="現在のパスワードを入力">
+          <input type="password" id="repassword" name="password" placeholder="現在のパスワードを入力"></label>
         </div>
         <!-- 変更ボタン -->
         <button type="submit" class="submit-btn">変更</button>
+        <!-- ログアウトボタン -->
+        <button type="submit" class="logout-btn">ログアウト</button>
+        <!-- アカウント削除ボタン -->
+        <button type="submit" class="delete-btn">アカウント削除</button>
 
       </form>
     </div>
