@@ -1,8 +1,9 @@
+
+<!-- templates/create_post.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>投稿作成</title>
   <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
@@ -10,44 +11,39 @@
 <body>
   <!-- ヘッダーをインクルード -->
   {% include 'header.html' %}
-
   <!-- メインコンテンツ -->
   <main class="main-content">
-    <!-- 見出し -->
-    <h1 class="discover-title">投稿作成</h1>
+  <h1 class="discover-title">投稿作成</h1>
+  <form action="/create_post" method="POST" enctype="multipart/form-data">
+    <!-- タイトル (DB的には content に保存する想定なら name="content" など) -->
     <div class="form-container">
       <div class="form-group">
-        <label for="title">タイトル<span class="required">*</span></label>
-        <input type="text" id="title" name="title" maxlength="30" placeholder="タイトルを入力(30字)" required>
-      </div>
-
-      <div class="form-group">
-        <label for="url">URL</label>
-        <input type="url" id="url" name="url" placeholder="ポストURLを入力">
-      </div>
-
-      <div class="form-group">
-        <label for="thumbnail">サムネイル</label>
-        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
-      </div>
-
-      <div class="form-group">
-        <label for="tags">タグ</label>
-        <div class="tag-list">
-          <button type="button">#作業効率</button>
-          <button type="button">#仕事</button>
-          <button type="button">#学習</button>
-          <button type="button">#趣味</button>
-          <button type="button">#良い商品</button>
-        </div>
-        <input type="text" id="tags" name="tags" placeholder="タグを入力">
-      </div>
-      
-      <div class="form-group">
-        <button type="submit" class="submit-btn" onclick="window.location.href='/create_post_check'">確認へ</button>
-      </div>
+        <label for="title">タイトル<span style="color:red">*</span></label>
+        <input type="text" name="content" maxlength="30" required placeholder="30文字以内">
     </div>
-    </form>
-  </main>
+
+    <!-- ツイートURL -->
+    <div class="form-group">
+      <label for="url">URL <span style="color:red">*</span></label>
+      <input type="url" name="tweet_link" required>
+    </div>
+
+    <!-- サムネイル画像 -->
+    <div class="form-group">
+      <label for="thumbnail">サムネイルイメージ</label>
+      <input type="file" name="thumbnail" accept="image/*">
+    </div>
+
+    <!-- タグ (最大6つ) -->
+    <div class="form-group">
+      <label for="tags">タグ</label>
+      <input type="text" name="tags" placeholder="タグを入力 (最大6つまで)">
+    </div>
+
+    <div class="form-group">
+    <!-- 確認ボタン -->
+    <button type="submit" class="submit-btn" name="action" value="confirm">確認へ</button>
+    </div>
+  </form>
 </body>
 </html>

@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, session
 from models import db, User, Post, PostAnalytics, Tag, PostTag
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -15,13 +16,20 @@ os.makedirs(db_dir, exist_ok=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+
+app.secret_key = "some_secret_key"
+app.config["UPLOAD_FOLDER"] = "static/uploads"
+app.config["TMP_FOLDER"] = "tmp"  # 一時ファイル保存用など
+
 # DBの初期化
 db.init_app(app)
 
+
 @app.route("/")
 def index():
-    #posts = Post.query.all()
-    return render_template("index.html") #posts=posts
+    # DBから投稿を一覧表示
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
 
 # アカウントページ
 @app.route("/account")
@@ -51,12 +59,6 @@ def post_page():
         return redirect(url_for("index"))
     return render_template("create_post.html")
 
-@app.route("/create_post_check", methods=["GET","POST"])
-def create_post_check():
-    if request.method == "POST":
-
-        return redirect(url_for("index"))
-    return render_template("create_post_check.html")
 
 # 検索ページ (GETのみ想定)
 @app.route("/search", methods=["GET"])
@@ -94,6 +96,111 @@ def search():
         )
     
     return render_template("search.html", results=results, query=query)
+
+@app.route("/create_post", methods=["GET", "POST"])
+def create_post():
+    if request.method == "GET":
+        # 入力フォームを表示
+        return render_template("create_post.html")
+
+    # POST の場合
+    action = request.form.get("action")
+    if action == "confirm":
+        # 1) フォーム入力を受け取り、一時的にセッション保存
+        content = request.form.get("content")
+        tweet_link = request.form.get("tweet_link")
+        tags_str = request.form.get("tags", "").strip()
+        
+        # ファイルアップロード（サムネイル）
+        thumbnail = request.files.get("thumbnail")
+        thumbnail_filename = None
+        if thumbnail and thumbnail.filename:
+            safe_name = secure_filename(thumbnail.filename)
+            # 一時フォルダに保存
+            os.makedirs(app.config["TMP_FOLDER"], exist_ok=True)
+            tmp_path = os.path.join(app.config["TMP_FOLDER"], safe_name)
+            thumbnail.save(tmp_path)
+            thumbnail_filename = safe_name
+
+        # セッションに保存
+        session["post_data"] = {
+            "content": content,
+            "tweet_link": tweet_link,
+            "tags": tags_str,
+            "thumbnail_filename": thumbnail_filename
+        }
+
+        # 2) 確認画面へリダイレクト
+        return redirect(url_for("create_post_confirm"))
+
+    elif action == "register":
+        # 3) 確認画面から「登録」を押した場合
+        post_data = session.get("post_data", {})
+        if not post_data:
+            return redirect(url_for("create_post"))  # データがなければフォームへ
+
+        # DB登録
+        new_post = Post(
+            user_id=1,  # ログインユーザーID想定
+            content=post_data.get("content"),
+            tweet_link=post_data.get("tweet_link")
+            # imageは後ほど
+        )
+        db.session.add(new_post)
+        db.session.flush()  # post_idを確定
+
+        # サムネイルを本保存場所へ移動
+        thumbnail_filename = post_data.get("thumbnail_filename")
+        image_path = None
+        if thumbnail_filename:
+            tmp_path = os.path.join(app.config["TMP_FOLDER"], thumbnail_filename)
+            final_path = os.path.join(app.config["UPLOAD_FOLDER"], thumbnail_filename)
+            os.rename(tmp_path, final_path)  # tmp -> static/uploads
+            image_path = f"/{app.config['UPLOAD_FOLDER']}/{thumbnail_filename}"
+            new_post.image = image_path
+
+        # タグ処理（最大6つ）
+        tags_str = post_data.get("tags", "")
+        if tags_str:
+            tag_list = tags_str.split()
+            tag_list = tag_list[:6]  # 6個に制限
+            for t in tag_list:
+                # 先頭#除去
+                if t.startswith("#"):
+                    t = t[1:]
+                t = t.strip()
+                if not t:
+                    continue
+                # Tagテーブルに存在チェック
+                existing_tag = Tag.query.filter_by(name=t).first()
+                if not existing_tag:
+                    existing_tag = Tag(name=t)
+                    db.session.add(existing_tag)
+                    db.session.flush()
+                # PostTag
+                pt = PostTag(post_id=new_post.post_id, tag_id=existing_tag.tag_id)
+                db.session.add(pt)
+
+        db.session.commit()
+
+        # セッション削除
+        session.pop("post_data", None)
+
+        return redirect(url_for("index"))
+
+    else:
+        # 何らかのイレギュラー
+        return redirect(url_for("create_post"))
+
+
+@app.route("/create_post/confirm", methods=["GET"])
+def create_post_confirm():
+    # セッションから入力データを取得
+    post_data = session.get("post_data")
+    if not post_data:
+        return redirect(url_for("create_post"))  # データがなければフォームへ
+    return render_template("create_post_check.html", post_data=post_data)
+
 
 # アプリ起動時にデータベースを作成
 if __name__ == "__main__":

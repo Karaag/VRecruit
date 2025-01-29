@@ -1,40 +1,65 @@
+<!-- templates/create_post_confirm.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>確認画面</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
 <body>
-  {% include 'header.html' %}
-
-  <main class="main-content">
-    <h1 class="discover-title">確認画面</h1>
-
-    <!-- 画像表示 -->
-    <div class="image-container">
-      <div class="image-wrapper">
-        <img src="static/images/example1.png" alt="作成した画像">
-        <p>ボディインストラクター</p>
-      </div>
-      <div class="image-wrapper">
-        <img src="static/images/example2.png" alt="ツイート画像">
-      </div>
+  <h1>確認画面</h1>
+  
+  <div style="display:flex; gap:2rem;">
+    <!-- 左: サムネイル画像 -->
+    <div>
+      {% if post_data.thumbnail_filename %}
+        <p>サムネイル</p>
+        <!-- tmpフォルダにあるファイルを表示 (要設定: /tmp/ へのアクセス) -->
+        <img 
+          src="{{ url_for('static', filename='../tmp/' ~ post_data.thumbnail_filename) }}" 
+          alt="Thumbnail"
+          style="max-width:200px;"
+        >
+      {% else %}
+        <p>画像なし</p>
+      {% endif %}
+      <p>{{ post_data.content }}</p>
     </div>
-
-    <!-- タグ表示 -->
-    <div class="tags-container">
-      <span class="tag">#保育士</span>
-      <span class="tag">#保育士</span>
-      <span class="tag">#保育士</span>
-      <span class="tag">#保育士</span>
+    
+    <!-- 右: ツイートプレビュー(iframeやembedなどで再現できる場合も) -->
+    <div>
+      <p>ツイートURLプレビュー</p>
+      <iframe 
+        src="{{ post_data.tweet_link }}" 
+        style="width:300px; height:400px; border:1px solid #ccc;">
+      </iframe>
     </div>
+  </div>
 
-    <!-- ボタン -->
-    <div class="button-container">
-      <button class="button register-btn" onclick="location.href='index.html'">登録</button>
-      <button class="button edit-btn" onclick="location.href='create_post.html'">変更</button>
-    </div>
-  </main>
+  <!-- タグ一覧 -->
+  <div>
+    <p>タグ:</p>
+    {% if post_data.tags %}
+      {% set tag_list = post_data.tags.split() %}
+      {% for tag in tag_list %}
+        <span style="padding:5px; background:#333; margin:2px; border-radius:4px;">
+          {{ tag }}
+        </span>
+      {% endfor %}
+    {% else %}
+      <p>タグなし</p>
+    {% endif %}
+  </div>
+
+  <!-- ボタン類 -->
+  <form action="{{ url_for('create_post') }}" method="POST">
+    <!-- 「登録」ボタン -->
+    <button type="submit" name="action" value="register" style="background:teal; color:#fff;">
+      登録
+    </button>
+    <!-- 「変更」ボタン: フォームに戻る (history.back() でもOK) -->
+    <button type="button" onclick="history.back()" style="background:#f33; color:#fff;">
+      変更
+    </button>
+  </form>
 </body>
 </html>
