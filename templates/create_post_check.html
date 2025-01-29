@@ -4,18 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <title>確認画面</title>
+  <!-- CSSの読み込み -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
+    <!-- ヘッダーをインクルード -->
+    {% include 'header.html' %}
+  <main class="main-content">  
   <h1>確認画面</h1>
   
   <div style="display:flex; gap:2rem;">
-    <!-- 左: サムネイル画像 -->
     <div>
       {% if post_data.thumbnail_filename %}
         <p>サムネイル</p>
-        <!-- tmpフォルダにあるファイルを表示 (要設定: /tmp/ へのアクセス) -->
+        <!-- tmpフォルダにあるファイル (static/tmp/filename) -->
         <img 
-          src="{{ url_for('static', filename='../tmp/' ~ post_data.thumbnail_filename) }}" 
+          src="{{ url_for('static', filename='tmp/' ~ post_data.thumbnail_filename) }}" 
           alt="Thumbnail"
           style="max-width:200px;"
         >

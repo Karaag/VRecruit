@@ -25,19 +25,26 @@
         <!-- メルアド -->
         <div class="form-group">
           <label for="email">Change Email</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" required placeholder="新しいメールアドレスを入力">
         </div>
-
+        <!-- 変更ボタン -->
+          <button type="submit" class="submit-btn">変更</button>
         <!-- パスワード -->
         <div class="form-group">
           <label for="password">Change Password</label>
-          <input type="password" id="password" name="password">
+          <input type="password" id="password" name="password" placeholder="新しいパスワードを入力">
         </div>
+        <!-- パスワード再入力 -->
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="新しいパスワードをもう一度入力">
+        </div>
+        <!-- 現在のパスワード -->
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="現在のパスワードを入力">
+        </div>
+        <!-- 変更ボタン -->
+        <button type="submit" class="submit-btn">変更</button>
 
-        <!-- 保存ボタン -->
-        <div class="form-actions">
-          <button type="submit" class="submit-btn">保存</button>
-        </div>
       </form>
     </div>
   </main>

@@ -18,8 +18,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 app.secret_key = "some_secret_key"
-app.config["UPLOAD_FOLDER"] = "static/uploads"
-app.config["TMP_FOLDER"] = "tmp"  # 一時ファイル保存用など
+app.config["TMP_FOLDER"] = "static/tmp"      # 一時ファイル
+app.config["UPLOAD_FOLDER"] = "static/uploads"  # 本登録保存先
+
 
 # DBの初期化
 db.init_app(app)
