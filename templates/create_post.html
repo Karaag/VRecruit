@@ -4,42 +4,37 @@
 <head>
   <meta charset="UTF-8">
   <title>投稿作成</title>
-  <!-- 例: 既存のCSSを読み込む -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <!-- ヘッダーなどはindex.htmlと同様でOK -->
+  <h1>投稿作成</h1>
+  <form action="/create_post" method="POST" enctype="multipart/form-data">
+    <!-- タイトル (DB的には content に保存する想定なら name="content" など) -->
+    <div>
+      <label>タイトル <span style="color:red">*</span></label>
+      <input type="text" name="content" maxlength="30" required placeholder="30文字以内">
+    </div>
 
-  <main class="main-content">
-    <h1>投稿作成</h1>
+    <!-- ツイートURL -->
+    <div>
+      <label>URL <span style="color:red">*</span></label>
+      <input type="url" name="tweet_link" required>
+    </div>
 
-    <form action="{{ url_for('create_post') }}" method="POST" enctype="multipart/form-data">
-      <!-- タイトル(実際には content に格納) -->
-      <div class="form-group">
-        <label for="content">タイトル <span class="required">*</span></label>
-        <input type="text" id="content" name="content" placeholder="タイトルを入力(30字以内)" maxlength="30" required>
-      </div>
+    <!-- サムネイル画像 -->
+    <div>
+      <label>サムネイルイメージ</label>
+      <input type="file" name="thumbnail" accept="image/*">
+    </div>
 
-      <!-- URL (tweet_link) -->
-      <div class="form-group">
-        <label for="url">URL <span class="required">*</span></label>
-        <input type="url" id="url" name="tweet_link" placeholder="求人に対応するツイートURL" required>
-      </div>
+    <!-- タグ (最大6つ) -->
+    <div>
+      <label>タグ</label>
+      <input type="text" name="tags" placeholder="タグを入力 (最大6つまで)">
+    </div>
 
-      <!-- サムネイル画像 -->
-      <div class="form-group">
-        <label for="thumbnail">サムネイルイメージ</label>
-        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
-      </div>
-
-      <!-- タグ (最大6つ)。実装詳細はお好みで -->
-      <div class="form-group">
-        <label for="tags">タグ</label>
-        <input type="text" id="tags" name="tags" placeholder="最大6つまで (例: VR ボランティア)" />
-      </div>
-
-      <button type="submit">確認へ</button>
-    </form>
-  </main>
+    <!-- 確認ボタン -->
+    <button type="submit" name="action" value="confirm">確認へ</button>
+  </form>
 </body>
 </html>
+
