@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <!-- CSSの読み込み -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <!-- ヘッダーをインクルード -->
+  {% include 'header.html' %}
+
+  <!-- メインコンテンツ -->
+  <main class="main-content">
+    <!-- ユーザー情報 -->
+    <h1 class="discover-title">Edit profile
+    <div class="form-container">
+      <form action="/update-profile" method="POST" enctype="multipart/form-data">
+        <!-- Xアカウント -->
+        <div class="form-group">
+          <label for="profile-image">Change X</label>
+        </div>
+
+        <!-- メルアド -->
+        <div class="form-group">
+          <label for="name">Change Email</label>
+          <input type="text" id="name" name="name" value="山田 太郎" required>
+        </div>
+
+        <!-- パスワード -->
+        <div class="form-group">
+          <label for="twitter-account">Change Password</label>
+          <input type="text" id="twitter-account" name="twitter_account" value="@tsukuba">
+        </div>
+
+        <!-- 保存ボタン -->
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">保存</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

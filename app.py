@@ -29,6 +29,18 @@ def account():
     # とりあえず簡単にテンプレートを返す例
     return render_template("account.html")
 
+# アカウント編集ページ
+@app.route("/account-edit")
+def account_edit():
+    # とりあえず簡単にテンプレートを返す例
+    return render_template("account_edit.html")
+
+# 人気ページ
+@app.route("/popular")
+def popular_post():
+    # とりあえず簡単にテンプレートを返す例
+    return render_template("popular_post.html")
+
 # 投稿作成ページ
 @app.route("/post", methods=["GET", "POST"])
 def post_page():

@@ -4,16 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>確認画面</title>
-  <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-</head>
 <body>
-  <!-- ヘッダーをインクルード -->
   {% include 'header.html' %}
 
-  <!-- メインコンテンツ -->
   <main class="main-content">
-    <!-- 見出し -->
     <h1 class="discover-title">確認画面</h1>
+
+    <!-- 画像表示 -->
+    <div class="image-container">
+      <div class="image-wrapper">
+        <img src="static/images/example1.png" alt="作成した画像">
+        <p>ボディインストラクター</p>
+      </div>
+      <div class="image-wrapper">
+        <img src="static/images/example2.png" alt="ツイート画像">
+      </div>
+    </div>
+
+    <!-- タグ表示 -->
+    <div class="tags-container">
+      <span class="tag">#保育士</span>
+      <span class="tag">#保育士</span>
+      <span class="tag">#保育士</span>
+      <span class="tag">#保育士</span>
+    </div>
+
+    <!-- ボタン -->
+    <div class="button-container">
+      <button class="button register-btn" onclick="location.href='index.html'">登録</button>
+      <button class="button edit-btn" onclick="location.href='create_post.html'">変更</button>
+    </div>
   </main>
 </body>
+</html>
