@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <!-- ヘッダーをインクルード -->
   {% include 'header.html' %}
 
   <!-- メインコンテンツ -->
   <main class="main-content">
+
     <!-- 見出し -->
     <h1 class="discover-title">Discover 求人</h1>
-    <!-- タグ一覧 -->
+    <!-- タグ一覧(既存の固定ボタン) -->
     <div class="tag-list">
       <button>#保育士</button>
       <button>#猫</button>
@@ -29,38 +29,50 @@
     <section class="popular-section">
       <div class="section-heading">
         <h2>人気</h2>
-        <!-- 見出し右側の＋ボタン -->
-        <div class="section-add" onclick="alert('人気に新規追加')">+</div>
+        <div class="section-add" onclick="window.location.href='/popular'">+</div>
       </div>
       <div class="card-grid">
-        <div class="card">
-          <img
-            src="https://via.placeholder.com/300x300.png?text=VR+Instructor+Image"
-            alt="VR Instructor"
-          />
-          <p class="card-title">ボドゲインストラクター</p>
-        </div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
+        {% for post in popular_posts %}
+          <div class="card"
+               onclick="openPopup('{{ post.tweet_link }}', '{{ post.content|escape }}')">
+            <img
+              src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
+              alt="Post Image"
+            />
+            <p class="card-title">{{ post.content }}</p>
+          </div>
+        {% endfor %}
+        {% if popular_posts|length < 6 %}
+          {% for i in range(6 - popular_posts|length) %}
+            <div class="card empty"></div>
+          {% endfor %}
+        {% endif %}
       </div>
     </section>
 
+    
     <!-- 新着セクション -->
     <section class="new-section">
       <div class="section-heading">
         <h2>新着</h2>
-        <div class="section-add" onclick="alert('新着に新規追加')">+</div>
+        <div class="section-add" onclick="window.location.href='/popular'">+</div>
       </div>
       <div class="card-grid">
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
+        {% for post in new_posts %}
+          <div class="card">
+            <img
+              src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
+              alt="Post Image"
+            />
+            <p class="card-title">{{ post.content }}</p>
+          </div>
+        {% endfor %}
+
+        {% if new_posts|length < 6 %}
+          {% for i in range(6 - new_posts|length) %}
+            <div class="card empty"></div>
+          {% endfor %}
+        {% endif %}
       </div>
     </section>
 
@@ -68,17 +80,27 @@
     <section class="featured-section">
       <div class="section-heading">
         <h2>特集</h2>
-        <div class="section-add" onclick="alert('特集に新規追加')">+</div>
+        <div class="section-add" onclick="window.location.href='/popular'">+</div>
       </div>
       <div class="card-grid">
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
-        <div class="card empty"></div>
+        {% for post in featured_posts %}
+          <div class="card">
+            <img
+              src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
+              alt="Post Image"
+            />
+            <p class="card-title">{{ post.content }}</p>
+          </div>
+        {% endfor %}
+
+        {% if featured_posts|length < 6 %}
+          {% for i in range(6 - featured_posts|length) %}
+            <div class="card empty"></div>
+          {% endfor %}
+        {% endif %}
       </div>
     </section>
+
   </main>
 
   <!-- スクロールでヘッダーを隠すJS (必要なら) -->
@@ -96,6 +118,35 @@
       }
       lastScrollTop = scrollTop;
     });
+
+
+
+    // モーダルを開く
+    function openPopup(tweetLink, tagString="") {
+      const modal = document.getElementById("tweetModal");
+      
+      // aタグにhrefをセット
+      const linkEl = document.getElementById("tweetLink");
+      linkEl.setAttribute("href", tweetLink);
+      
+      // モーダル表示
+      modal.style.display = "block";
+
+      // タグ表示 (必要なら)
+      // const modalTags = document.getElementById("modalTags");
+      // modalTags.innerHTML = tagString ? `#${tagString}` : "";
+
+      // Twitter埋め込みを再読み込み
+      twttr.widgets.load(document.getElementById("tweetModal"));
+    }
+
+    // モーダルを閉じる
+    function closePopup() {
+      const modal = document.getElementById("tweetModal");
+      modal.style.display = "none";
+    }
   </script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 </body>
 </html>

@@ -1,19 +1,66 @@
+<!-- templates/create_post_check.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>確認画面</title>
-  <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <!-- ヘッダーをインクルード -->
   {% include 'header.html' %}
+  
+  <main class="main-content confirm-container">
+    <h1 class="confirm-title">確認画面</h1>
+    
+    <div class="confirm-content">
+      <!-- 左: サムネイル(300×300) + タイトル -->
+      <div class="confirm-left">
+        {% if post_data.thumbnail_filename %}
+          <img
+            class="confirm-image"
+            src="{{ url_for('static', filename='tmp/' ~ post_data.thumbnail_filename) }}"
+            alt="サムネイル"
+          >
+        {% else %}
+          <div class="no-image">画像なし</div>
+        {% endif %}
+        
+        <!-- タイトル -->
+        <p class="confirm-job-title">{{ post_data.content }}</p>
+      </div>
 
-  <!-- メインコンテンツ -->
-  <main class="main-content">
-    <!-- 見出し -->
-    <h1 class="discover-title">確認画面</h1>
+      <!-- 右: Twitter公式埋め込み (x.com→twitter.com 済の場合) -->
+      <div class="confirm-right">
+        <blockquote class="twitter-tweet">
+          <a href="{{ post_data.tweet_link }}"></a>
+        </blockquote>
+      </div>
+    </div>
+    
+    <!-- タグ表示 -->
+    <div class="confirm-tags">
+      {% if post_data.tags %}
+        {% set tag_list = post_data.tags.split() %}
+        {% for tag in tag_list %}
+          <span class="confirm-tag-pill">#{{ tag }}</span>
+        {% endfor %}
+      {% else %}
+        <p>タグなし</p>
+      {% endif %}
+    </div>
+
+    <!-- ボタン -->
+    <form action="{{ url_for('create_post') }}" method="POST" class="confirm-buttons">
+      <button type="submit" name="action" value="register" class="confirm-button-register">
+        登録
+      </button>
+      <button type="button" onclick="history.back()" class="confirm-button-change">
+        変更
+      </button>
+    </form>
   </main>
+
+  <!-- ▼ TwitterのウィジェットJS -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
+</html>
