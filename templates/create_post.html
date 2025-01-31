@@ -1,49 +1,49 @@
-
 <!-- templates/create_post.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>投稿作成</title>
-  <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-  <!-- ヘッダーをインクルード -->
   {% include 'header.html' %}
-  <!-- メインコンテンツ -->
   <main class="main-content">
-  <h1 class="discover-title">投稿作成</h1>
-  <form action="/create_post" method="POST" enctype="multipart/form-data">
-    <!-- タイトル (DB的には content に保存する想定なら name="content" など) -->
-    <div class="form-container">
-      <div class="form-group">
-        <label for="title">タイトル<span style="color:red">*</span></label>
-        <input type="text" name="content" maxlength="30" required placeholder="30文字以内">
-    </div>
+    <h1 class="discover-title">投稿作成</h1>
+    <form action="/create_post" method="POST" enctype="multipart/form-data">
+      <div class="form-container">
 
-    <!-- ツイートURL -->
-    <div class="form-group">
-      <label for="url">URL <span style="color:red">*</span></label>
-      <input type="url" name="tweet_link" required>
-    </div>
+        <!-- タイトル -->
+        <div class="form-group">
+          <label for="content">タイトル<span style="color:red">*</span></label>
+          <input type="text" name="content" maxlength="30" required placeholder="30文字以内">
+        </div>
 
-    <!-- サムネイル画像 -->
-    <div class="form-group">
-      <label for="thumbnail">サムネイルイメージ</label>
-      <input type="file" name="thumbnail" accept="image/*">
-    </div>
+        <!-- ツイートリンク -->
+        <div class="form-group">
+          <label for="tweet_link">ツイートリンク<span style="color:red">*</span></label>
+          <input type="url" name="tweet_link" required>
+        </div>
 
-    <!-- タグ (最大6つ) -->
-    <div class="form-group">
-      <label for="tags">タグ</label>
-      <input type="text" name="tags" placeholder="タグを入力 (最大6つまで)">
-    </div>
+        <!-- サムネイル画像 -->
+        <div class="form-group">
+          <label for="thumbnail">サムネイルイメージ</label>
+          <input type="file" name="thumbnail" accept="image/*">
+        </div>
 
-    <div class="form-group">
-    <!-- 確認ボタン -->
-    <button type="submit" class="submit-btn" name="action" value="confirm">確認へ</button>
-    </div>
-  </form>
+        <!-- タグ (最大6つ) -->
+        <div class="form-group">
+          <label for="tags">タグ</label>
+          <input type="text" name="tags" placeholder="スペース区切り (最大6つまで)">
+        </div>
+
+        <!-- 確認ボタン -->
+        <div class="form-group">
+          <button type="submit" class="submit-btn" name="action" value="confirm">確認へ</button>
+        </div>
+
+      </div>
+    </form>
+  </main>
 </body>
 </html>
