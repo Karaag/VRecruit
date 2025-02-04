@@ -2,6 +2,8 @@ import os
 from flask import Flask, request, render_template, redirect, url_for, session
 from models import db, User, Post, PostAnalytics, Tag, PostTag
 from werkzeug.utils import secure_filename
+from PIL import Image
+
 
 app = Flask(__name__)
 
@@ -43,6 +45,12 @@ def account():
 def account_edit():
     # とりあえず簡単にテンプレートを返す例
     return render_template("account_edit.html")
+
+# アカウントページ
+@app.route("/analytics")
+def analytics():
+    # とりあえず簡単にテンプレートを返す例
+    return render_template("user_analytics.html")
 
 # 人気ページ
 @app.route("/popular")
@@ -121,6 +129,14 @@ def create_post():
             os.makedirs(app.config["TMP_FOLDER"], exist_ok=True)
             tmp_path = os.path.join(app.config["TMP_FOLDER"], safe_name)
             thumbnail.save(tmp_path)
+            
+            # ★ ここでサーバーサイドリサイズ (300x300) -------------
+            with Image.open(tmp_path) as img:
+                # リサイズ
+                resized_img = img.resize((300, 300))
+                # リサイズ結果を上書き保存（または別ファイル名で保存してもOK）
+                resized_img.save(tmp_path)
+
             thumbnail_filename = safe_name
 
         # セッションに保存

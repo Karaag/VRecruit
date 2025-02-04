@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - ボドゲいんすとらスタッフ</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<!-- ヘッダーをインクルード -->
+ {% include 'header.html' %}
+  <main class="main-content">
+    <h1 class="discover-title">Analytics “ボドゲいんすとらスタッフ”</h1>
+
+    <section class="analytics">
+      <h2>クリック数推移</h2>
+      <canvas id="clickChart"></canvas>
+      <div class="stats">
+        <p>クリック数合計 <strong>400</strong></p>
+        <p>ツイート遷移合計 <strong>100</strong></p>
+      </div>
+    </section>
+    
+    <section class="publishing-period">
+      <h2>掲載期限</h2>
+      <p><strong>~2024/11/20</strong></p>
+      <button class="extend-btn">延長</button>
+    </section>
+  </main>
+  
+  <script>
+    const ctx = document.getElementById('clickChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2024/11/15', '2024/11/15', '2024/11/15', '2024/11/15', '2024/11/15', '2024/11/15'],
+        datasets: [{
+          label: 'クリック数',
+          data: [50, 100, 70, 40, 30, 50],
+          borderColor: 'cyan',
+          backgroundColor: 'rgba(0,255,255,0.2)',
+          fill: true
+        }]
+      },
+      options: { responsive: true }
+    });
+  </script>
+</body>
+</html>
