@@ -481,29 +481,29 @@ section {
 /* ポップアップ */
 
 
-/* モーダルのオーバーレイ全画面 */
+/* モーダルの背景 (画面全体) */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.8); /* 画面を覆う半透明黒 */
-  z-index: 9999; /* 最前面に表示 */
+  background-color: rgba(0, 0, 0, 0.8); /* 半透明の黒 */
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
 }
 
-/* モーダルの中身 (tweet表示枠) */
+/* モーダルの中身 */
 .modal-content {
-  position: relative;
-  background-color: #333; /* お好みでダーク背景 */
+  background-color: #333;
+  color: #fff;
   padding: 2rem;
   border-radius: 10px;
-  max-width: 600px; /* 幅制限 */
-  width: 90%;       /* スマホ対応で広めに */
-  color: #fff;      /* 白字 */
+  max-width: 600px;
+  width: 80%;
+  position: relative; /* 閉じるボタンの位置指定のため */
 }
 
 /* 閉じるボタン(×)のスタイル */

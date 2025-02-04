@@ -68,11 +68,15 @@ def index():
     # ★特集: ランダムで6件
     featured_posts = base_query.order_by(func.random()).limit(6).all()
 
+    # ここで一括で全件取りたい場合は下記例:
+    #all_posts = Post.query.filter_by(delete_flag=False).all()
+
     return render_template(
         "index.html",
         popular_posts=popular_posts,
         new_posts=new_posts,
-        featured_posts=featured_posts
+        featured_posts=featured_posts,
+        #all_posts=all_posts
     )
 
 # アカウントページ

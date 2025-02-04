@@ -4,18 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VR Recruit - Discover 求人</title>
-  <!-- CSSの読み込み -->
+  <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
+  <!-- ヘッダー -->
   {% include 'header.html' %}
 
-  <!-- メインコンテンツ -->
   <main class="main-content">
-
-    <!-- 見出し -->
     <h1 class="discover-title">Discover 求人</h1>
-    <!-- タグ一覧(既存の固定ボタン) -->
     <div class="tag-list">
       <button>#保育士</button>
       <button>#猫</button>
@@ -33,13 +30,20 @@
       </div>
       <div class="card-grid">
         {% for post in popular_posts %}
-          <div class="card"
-               onclick="openPopup('{{ post.tweet_link }}', '{{ post.content|escape }}')">
+          <div class="card" onclick="showModal('{{ post.post_id }}')">
             <img
               src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
               alt="Post Image"
             />
             <p class="card-title">{{ post.content }}</p>
+
+            <!-- ▼ モーダル用に隠しておくブロック (tweetLinkを直接埋め込み) -->
+            <div id="modal-content-{{ post.post_id }}" style="display:none;">
+              <blockquote class="twitter-tweet">
+                <!-- ここでサーバーサイドでtweet_linkを直書き -->
+                <a href="{{ post.tweet_link }}"></a>
+              </blockquote>
+            </div>
           </div>
         {% endfor %}
         {% if popular_posts|length < 6 %}
@@ -50,7 +54,6 @@
       </div>
     </section>
 
-    
     <!-- 新着セクション -->
     <section class="new-section">
       <div class="section-heading">
@@ -59,15 +62,20 @@
       </div>
       <div class="card-grid">
         {% for post in new_posts %}
-          <div class="card">
+          <div class="card" onclick="showModal('{{ post.post_id }}')">
             <img
               src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
               alt="Post Image"
             />
             <p class="card-title">{{ post.content }}</p>
+
+            <div id="modal-content-{{ post.post_id }}" style="display:none;">
+              <blockquote class="twitter-tweet">
+                <a href="{{ post.tweet_link }}"></a>
+              </blockquote>
+            </div>
           </div>
         {% endfor %}
-
         {% if new_posts|length < 6 %}
           {% for i in range(6 - new_posts|length) %}
             <div class="card empty"></div>
@@ -84,15 +92,20 @@
       </div>
       <div class="card-grid">
         {% for post in featured_posts %}
-          <div class="card">
+          <div class="card" onclick="showModal('{{ post.post_id }}')">
             <img
               src="{{ post.image or 'https://via.placeholder.com/300x300.png?text=No+Image' }}"
               alt="Post Image"
             />
             <p class="card-title">{{ post.content }}</p>
+
+            <div id="modal-content-{{ post.post_id }}" style="display:none;">
+              <blockquote class="twitter-tweet">
+                <a href="{{ post.tweet_link }}"></a>
+              </blockquote>
+            </div>
           </div>
         {% endfor %}
-
         {% if featured_posts|length < 6 %}
           {% for i in range(6 - featured_posts|length) %}
             <div class="card empty"></div>
@@ -103,50 +116,41 @@
 
   </main>
 
-  <!-- スクロールでヘッダーを隠すJS (必要なら) -->
+  <!-- ▼ モーダル(1個だけ) -->
+  <div id="tweetModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- TwitterウィジェットJS -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+  <!-- ポップアップ制御のJS -->
   <script>
-    let lastScrollTop = 0;
-    window.addEventListener("scroll", () => {
-      const header = document.getElementById("mainHeader");
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if(scrollTop > lastScrollTop) {
-        // 下スクロール -> 隠す
-        header.style.top = "-80px";
-      } else {
-        // 上スクロール -> 表示
-        header.style.top = "0";
-      }
-      lastScrollTop = scrollTop;
-    });
+    function showModal(postId) {
+      // 隠し要素を探す
+      const hiddenDiv = document.getElementById("modal-content-" + postId);
+      if(!hiddenDiv) return;
 
+      // モーダル内にコピー
+      const modalBody = document.getElementById("modalBody");
+      modalBody.innerHTML = hiddenDiv.innerHTML;
 
-
-    // モーダルを開く
-    function openPopup(tweetLink, tagString="") {
-      const modal = document.getElementById("tweetModal");
-      
-      // aタグにhrefをセット
-      const linkEl = document.getElementById("tweetLink");
-      linkEl.setAttribute("href", tweetLink);
-      
       // モーダル表示
-      modal.style.display = "block";
+      const modal = document.getElementById("tweetModal");
+      modal.style.display = "flex";
 
-      // タグ表示 (必要なら)
-      // const modalTags = document.getElementById("modalTags");
-      // modalTags.innerHTML = tagString ? `#${tagString}` : "";
-
-      // Twitter埋め込みを再読み込み
-      twttr.widgets.load(document.getElementById("tweetModal"));
+      // ウィジェット再読み込み
+      twttr.widgets.load(modalBody);
     }
 
-    // モーダルを閉じる
     function closePopup() {
       const modal = document.getElementById("tweetModal");
       modal.style.display = "none";
+      document.getElementById("modalBody").innerHTML = "";
     }
   </script>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 </body>
 </html>
