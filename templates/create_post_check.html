@@ -1,69 +1,66 @@
-<!-- templates/create_post_confirm.html -->
+<!-- templates/create_post_check.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>確認画面</title>
-  <!-- CSSの読み込み -->
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-    <!-- ヘッダーをインクルード -->
-    {% include 'header.html' %}
-  <main class="main-content">  
-  <h1>確認画面</h1>
+  {% include 'header.html' %}
   
-  <div style="display:flex; gap:2rem;">
-    <div>
-      {% if post_data.thumbnail_filename %}
-        <p>サムネイル</p>
-        <!-- tmpフォルダにあるファイル (static/tmp/filename) -->
-        <img 
-          src="{{ url_for('static', filename='tmp/' ~ post_data.thumbnail_filename) }}" 
-          alt="Thumbnail"
-          style="max-width:200px;"
-        >
-      {% else %}
-        <p>画像なし</p>
-      {% endif %}
-      <p>{{ post_data.content }}</p>
+  <main class="main-content confirm-container">
+    <h1 class="confirm-title">確認画面</h1>
+    
+    <div class="confirm-content">
+      <!-- 左: サムネイル(300×300) + タイトル -->
+      <div class="confirm-left">
+        {% if post_data.thumbnail_filename %}
+          <img
+            class="confirm-image"
+            src="{{ url_for('static', filename='tmp/' ~ post_data.thumbnail_filename) }}"
+            alt="サムネイル"
+          >
+        {% else %}
+          <div class="no-image">画像なし</div>
+        {% endif %}
+        
+        <!-- タイトル -->
+        <p class="confirm-job-title">{{ post_data.content }}</p>
+      </div>
+
+      <!-- 右: Twitter公式埋め込み (x.com→twitter.com 済の場合) -->
+      <div class="confirm-right">
+        <blockquote class="twitter-tweet">
+          <a href="{{ post_data.tweet_link }}"></a>
+        </blockquote>
+      </div>
     </div>
     
-    <!-- 右: ツイートプレビュー(iframeやembedなどで再現できる場合も) -->
-    <div>
-      <p>ツイートURLプレビュー</p>
-      <iframe 
-        src="{{ post_data.tweet_link }}" 
-        style="width:300px; height:400px; border:1px solid #ccc;">
-      </iframe>
+    <!-- タグ表示 -->
+    <div class="confirm-tags">
+      {% if post_data.tags %}
+        {% set tag_list = post_data.tags.split() %}
+        {% for tag in tag_list %}
+          <span class="confirm-tag-pill">#{{ tag }}</span>
+        {% endfor %}
+      {% else %}
+        <p>タグなし</p>
+      {% endif %}
     </div>
-  </div>
 
-  <!-- タグ一覧 -->
-  <div>
-    <p>タグ:</p>
-    {% if post_data.tags %}
-      {% set tag_list = post_data.tags.split() %}
-      {% for tag in tag_list %}
-        <span style="padding:5px; background:#333; margin:2px; border-radius:4px;">
-          {{ tag }}
-        </span>
-      {% endfor %}
-    {% else %}
-      <p>タグなし</p>
-    {% endif %}
-  </div>
+    <!-- ボタン -->
+    <form action="{{ url_for('create_post') }}" method="POST" class="confirm-buttons">
+      <button type="submit" name="action" value="register" class="confirm-button-register">
+        登録
+      </button>
+      <button type="button" onclick="history.back()" class="confirm-button-change">
+        変更
+      </button>
+    </form>
+  </main>
 
-  <!-- ボタン類 -->
-  <form action="{{ url_for('create_post') }}" method="POST">
-    <!-- 「登録」ボタン -->
-    <button type="submit" name="action" value="register" style="background:teal; color:#fff;">
-      登録
-    </button>
-    <!-- 「変更」ボタン: フォームに戻る (history.back() でもOK) -->
-    <button type="button" onclick="history.back()" style="background:#f33; color:#fff;">
-      変更
-    </button>
-  </form>
+  <!-- ▼ TwitterのウィジェットJS -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

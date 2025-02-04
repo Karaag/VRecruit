@@ -3,6 +3,32 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from models import db, User, Post, PostAnalytics, Tag, PostTag
 from werkzeug.utils import secure_filename
 from PIL import Image
+from sqlalchemy import func
+
+
+def make_square_center_crop(in_path, out_path, size=300):
+    """アスペクト比を保ちつつ、正方形(size x size)に収まるよう中央トリミングする。"""
+    with Image.open(in_path) as img:
+        # 元のサイズ取得
+        w, h = img.size
+
+        # まず「短い辺を size にあわせる」形でリサイズ
+        #   ratio = size / 短い辺
+        ratio = size / min(w, h)
+        new_w = int(w * ratio)
+        new_h = int(h * ratio)
+        # PillowのANTIALIAS(=Resampling.LANCZOS)は高画質変換用
+        resized = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+
+        # 余分な部分を中央基準でトリミング → size x sizeを切り出す
+        left = (new_w - size) / 2
+        top = (new_h - size) / 2
+        right = left + size
+        bottom = top + size
+        cropped = resized.crop((left, top, right, bottom))
+
+        # 保存
+        cropped.save(out_path)
 
 
 app = Flask(__name__)
@@ -30,9 +56,24 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    # DBから投稿を一覧表示
-    posts = Post.query.all()
-    return render_template("index.html", posts=posts)
+    # 削除フラグOFFの投稿だけを対象に
+    base_query = Post.query.filter_by(delete_flag=False)
+
+    # ★人気: ここでは単純に post_id の降順(新しい順)で6件
+    popular_posts = base_query.order_by(Post.post_id.desc()).limit(6).all()
+
+    # ★新着: created_at の新しい順で6件
+    new_posts = base_query.order_by(Post.created_at.desc()).limit(6).all()
+
+    # ★特集: ランダムで6件
+    featured_posts = base_query.order_by(func.random()).limit(6).all()
+
+    return render_template(
+        "index.html",
+        popular_posts=popular_posts,
+        new_posts=new_posts,
+        featured_posts=featured_posts
+    )
 
 # アカウントページ
 @app.route("/account")
@@ -119,6 +160,10 @@ def create_post():
         content = request.form.get("content")
         tweet_link = request.form.get("tweet_link")
         tags_str = request.form.get("tags", "").strip()
+
+        # ▼ x.com → twitter.com に自動書き換え
+        if tweet_link and "x.com" in tweet_link:
+            tweet_link = tweet_link.replace("x.com", "twitter.com")
         
         # ファイルアップロード（サムネイル）
         thumbnail = request.files.get("thumbnail")
@@ -130,12 +175,9 @@ def create_post():
             tmp_path = os.path.join(app.config["TMP_FOLDER"], safe_name)
             thumbnail.save(tmp_path)
             
-            # ★ ここでサーバーサイドリサイズ (300x300) -------------
-            with Image.open(tmp_path) as img:
-                # リサイズ
-                resized_img = img.resize((300, 300))
-                # リサイズ結果を上書き保存（または別ファイル名で保存してもOK）
-                resized_img.save(tmp_path)
+            # ▼ ここで 300x300 にアスペクト比維持でトリミング
+            out_path = tmp_path  # 上書きする場合は同じパスでもOK
+            make_square_center_crop(tmp_path, out_path, size=300)
 
             thumbnail_filename = safe_name
 
