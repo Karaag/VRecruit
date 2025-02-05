@@ -520,4 +520,68 @@ section {
   transform: scale(1.2);
 }
 
+.analytics {
+  background-color: #2D363F; /* ダークグレーの背景 */
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analytics h2 {
+  text-align: left;
+  width: 100%;
+}
+
+.stats {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.stats p {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.stats strong{
+  font-size: 40px;
+}
+
+.publishing-period {
+  background-color: #2D363F; /* ダークグレーの背景 */
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.publishing-period h2 {
+  margin: 0;
+}
+
+.publishing-period p {
+  margin: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.submit-btn {
+  background-color: #007f89; /* 明るい青色 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #007f89; /* ホバー時に少し暗く */
+}
+
 /* blockquoteの中が白背景になる場合、周囲の色と調整するなど */

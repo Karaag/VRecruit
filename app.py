@@ -91,6 +91,12 @@ def account_edit():
     # とりあえず簡単にテンプレートを返す例
     return render_template("account_edit.html")
 
+# アカウントページ
+@app.route("/analytics")
+def analytics():
+    # とりあえず簡単にテンプレートを返す例
+    return render_template("user_analytics.html")
+
 # 人気ページ
 @app.route("/popular")
 def popular_post():
